@@ -22,7 +22,7 @@ const Header = () => {
         {session && status === 'authenticated' ? (
           <div className='flex gap-2 items-center'>
             <Image src={session.user.image ? session.user.image : '/person.jpg'} alt='profile' width={40} height={40} className='rounded-full' />
-            <Button variant="secondary" onClick={() => signOut({ callbackUrl: '/' })} >Logout</Button>
+            <Button onClick={() => signOut({ callbackUrl: '/' })} >Logout</Button>
           </div>
         ) : (
           <Button onClick={() => router.push('/register')} >Lets Chat</Button>
