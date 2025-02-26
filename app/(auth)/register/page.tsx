@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import FormRegister from './form-register'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -11,7 +11,9 @@ const RegisterPage = () => {
           <CardTitle className='text-2xl'>Daftar</CardTitle>
         </CardHeader>
         <CardContent>
-          <FormRegister />
+          <Suspense fallback={<div>Loading...</div>}>
+            <FormRegister />
+          </Suspense>
         </CardContent>
       </Card>
     </div>

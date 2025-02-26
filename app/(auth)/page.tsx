@@ -5,6 +5,7 @@ import { auth } from '@/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CredentialsSignInForm from './credentials-sigin-form'
 import { GoogleSignInForm } from './google-signin-form'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -32,7 +33,9 @@ export default async function SignIn(props: {
           <CardTitle className='text-2xl tracking-wide'>Masuk</CardTitle>
         </CardHeader>
         <CardContent>
-          <CredentialsSignInForm />
+          <Suspense fallback={<div>Loading...</div>} >
+            <CredentialsSignInForm />
+          </Suspense>
           <div className="text-center my-3 italic">or</div>
           <GoogleSignInForm />
           <div className='flex gap-1 mt-4 items-center py-3 px-3'>

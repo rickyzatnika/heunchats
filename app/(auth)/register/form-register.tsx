@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { Separator } from '@/components/ui/separator'
-import { isRedirectError } from 'next/dist/client/components/redirect-error'
-
 import { toast } from '@/hooks/use-toast'
 import { signInWithCredentials } from '@/lib/actions/user.action'
 
@@ -32,7 +30,6 @@ const signUpDefaultValues =
 export default function FormRegister() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/chats'
-  const router = useRouter();
   const form = useForm({
     defaultValues: signUpDefaultValues,
     mode: 'onBlur',
@@ -73,6 +70,7 @@ export default function FormRegister() {
   }
 
   return (
+
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type='hidden' name='callbackUrl' value={callbackUrl} />
@@ -152,5 +150,6 @@ export default function FormRegister() {
         </div>
       </form>
     </Form>
+
   )
 }
