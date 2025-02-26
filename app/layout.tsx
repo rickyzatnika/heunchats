@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
@@ -16,11 +15,11 @@ export const metadata: Metadata = {
   description: "Aplikasi Chat App dengan Next.js 15",
 };
 
-export default function RootLayout({ children, session }: { children: React.ReactNode, session: any }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en' suppressHydrationWarning translate='no'>
       <body className={`${inter.className} bg-white`}>
-        <ClientProvider session={session}>
+        <ClientProvider>
           <Toaster />
           <div>
             <Header />
