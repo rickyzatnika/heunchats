@@ -13,17 +13,17 @@ export async function POST(req: NextRequest) {
     const { name, email, password, confPassword } = body
 
     if (!name || !email || !password) {
-      return new NextResponse(JSON.stringify({ message: 'Please fill all fields' }), { status: 400 })
+      return NextResponse.json({ message: 'Name, email, and password are required' }, { status: 400 })
     }
 
     if (password !== confPassword) {
-      return new NextResponse(JSON.stringify({ message: 'Passwords do not match' }), { status: 400 })
+      return NextResponse.json({ message: 'Password and confirm password do not match' }, { status: 400 })
     }
 
     const existingUser = await User.findOne({ email })
 
     if (existingUser) {
-      return new NextResponse(JSON.stringify({ message: 'Email already exists' }), { status: 400 })
+      return NextResponse.json({ message: 'Email already exists' }, { status: 400 })
     }
 
     const newUser = await User.create({
@@ -38,8 +38,8 @@ export async function POST(req: NextRequest) {
       email: newUser.email,
     })
 
-    return new NextResponse(JSON.stringify(newUser), { status: 200 })
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 })
   } catch (error) {
-    return new NextResponse(JSON.stringify({ message: 'Database connection failed', error }), { status: 500 })
+    return NextResponse.json({ message: 'Terjadi kesalahan', error }, { status: 500 })
   }
 }

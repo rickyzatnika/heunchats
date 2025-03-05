@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import './globals.css'
-import { Inter } from 'next/font/google'
-import ClientProvider from '@/components/Provider'
-import { Toaster } from '@/components/ui/toaster'
-import Header from '@/components/shared/Header'
+import { Poppins } from 'next/font/google'
 
 
-const inter = Inter({ subsets: ['latin'] })
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+})
 
 
 
@@ -18,14 +19,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en' suppressHydrationWarning translate='no'>
-      <body className={`${inter.className} bg-white`}>
-        <ClientProvider>
-          <Toaster />
-          <div>
-            <Header />
-            {children}
-          </div>
-        </ClientProvider>
+      <body className={`${poppins.className} `}>
+
+        <div className="pt-20 md:pt-16 h-full w-full">
+          {children}
+        </div>
 
       </body>
     </html>

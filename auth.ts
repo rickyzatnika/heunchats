@@ -13,6 +13,7 @@ declare module 'next-auth' {
   // eslint-disable-next-line no-unused-vars
   interface Session {
     user: {
+      _id: string
       role: string
     } & DefaultSession['user']
   }
@@ -57,7 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           )
           if (isMatch) {
             return {
-              id: user._id,
+              id: user._id.toString(), // Pastikan _id dikonversi ke string
               name: user.name,
               email: user.email,
               image: user.image,
@@ -73,29 +74,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     jwt: async ({ token, user, trigger, session }) => {
       if (user) {
         if (!user.name) {
-          await connectToDatabase()
+          await connectToDatabase();
           await User.findByIdAndUpdate(user.id, {
-            name: user.name || user.email!.split('@')[0],
-            role: 'user',
-          })
+            name: user.name || user.email!.split("@")[0],
+            role: "user",
+          });
         }
-        token.name = user.name || user.email!.split('@')[0]
-        token.role = (user as { role: string }).role
+        token._id = (user as { id: string }).id; // Tambahkan `_id`
+        token.name = user.name || user.email!.split("@")[0];
+        token.role = (user as { role: string }).role;
       }
 
-      if (session?.user?.name && trigger === 'update') {
-        token.name = session.user.name
+      if (session?.user?.name && trigger === "update") {
+        token.name = session.user.name;
       }
-      return token
+      return token;
     },
     session: async ({ session, user, trigger, token }) => {
-      session.user.id = token.sub as string
-      session.user.role = token.role as string
-      session.user.name = token.name
-      if (trigger === 'update') {
-        session.user.name = user.name
+      session.user.id = token.sub as string;
+      session.user._id = token._id as string
+      session.user.role = token.role as string;
+      session.user.name = token.name;
+      if (trigger === "update") {
+        session.user.name = user.name;
       }
-      return session
-    },
+      return session;
+    }
   },
 })

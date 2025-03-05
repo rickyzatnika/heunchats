@@ -27,10 +27,10 @@ export default async function SignIn(props: {
 
 
   return (
-    <div className='w-full sm:w-1/2 md:w-1/3 mx-auto'>
+    <div className='w-full sm:w-1/2 md:w-1/3 mx-auto px-4'>
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl tracking-wide'>Masuk</CardTitle>
+          <CardTitle className='text-xl tracking-wide border-b pb-2'>Login Form </CardTitle>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<div>Loading...</div>} >

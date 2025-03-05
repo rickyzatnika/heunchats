@@ -14,18 +14,18 @@ const Header = () => {
 
   return (
     <>
-      <header className='w-full bg-background flex items-center justify-between px-4 sm:px-14 md:px-20 py-4'>
+      <header className='w-full fixed top-0 z-50 shadow-md bg-background flex items-center justify-between px-4 sm:px-14 md:px-20 py-4'>
         <nav>
-          <Link href="/" className='font-bold text-lg '>Hulenx Chats</Link>
+          <Link href="/" className='font-bold text-md md:text-lg '>Hulenx Chats</Link>
         </nav>
 
         {session && status === 'authenticated' ? (
           <div className='flex gap-2 items-center'>
-            <Image src={session.user.image ? session.user.image : '/person.jpg'} alt='profile' width={40} height={40} className='rounded-full' />
-            <Button onClick={() => signOut({ callbackUrl: '/' })} >Logout</Button>
+            <Image src={session.user.image ? session.user.image : '/person.jpg'} alt='profile' width={50} height={25} className='w-10 h-10 rounded-full' />
+            <Button size="sm" variant='outline' onClick={() => signOut({ callbackUrl: '/' })} >Logout</Button>
           </div>
         ) : (
-          <Button onClick={() => router.push('/register')} >Lets Chat</Button>
+          <Button size="sm" variant='outline' onClick={() => router.push('/register')} >Lets Chat</Button>
         )}
       </header>
     </>
