@@ -18,7 +18,7 @@ const Header = () => {
     <>
       <header className='w-full bg-accent-foreground fixed top-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14 md:px-20 py-4'>
         <nav>
-          <Link href="/" className='font-bold text-accent text-md md:text-lg '>HeunChats</Link>
+          <Link href="/" className='font-bold text-accent text-md md:text-lg '>HuLenx Chat</Link>
         </nav>
 
         {session && status === 'authenticated' ? (
