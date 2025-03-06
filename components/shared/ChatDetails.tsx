@@ -261,7 +261,7 @@ export default function ChatDetails({
 
   return (
     <div className="relative ">
-      <div className="h-screen  md:h-[535px] mb-2 flex flex-col  shadow-md rounded-2xl overflow-y-auto">
+      <div className="h-screen  md:h-[535px] mb-2 pb-8 flex flex-col  shadow-md rounded-2xl overflow-y-auto">
         <div className="flex items-center gap-4 px-3 w-full  bg-muted md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
