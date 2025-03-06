@@ -22,7 +22,7 @@ const signInDefaultValues = {
 
 export default function CredentialsSignInForm() {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/chats'
+  const callbackUrl = searchParams.get('callbackUrl') || '/contacts'
 
   const form = useForm({
     defaultValues: signInDefaultValues,

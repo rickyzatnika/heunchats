@@ -5,7 +5,7 @@
 import { pusherClient } from '@/lib/pusher/pusher';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react'
-import { ImageIcon, SendHorizonal, Smile, Upload } from 'lucide-react';
+import { ImageIcon, SendHorizonal, Smile, SmileIcon, Upload } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MessageBox from './MessageBox';
@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import EmojiPicker from "emoji-picker-react";
+import moment from 'moment';
 
 
 interface Message {
@@ -43,6 +44,13 @@ interface Chat {
   lastMessageAt: string;
 }
 
+interface ContactProps {
+  _id: string;
+  isOnline: boolean;
+  lastSeen?: Date | null;
+
+}
+
 
 export default function ChatDetails({
   chatId,
@@ -60,6 +68,7 @@ export default function ChatDetails({
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [currentProfileImage, setCurrentProfileImage] = useState('');
   const emojiPickerRef = useRef<HTMLDivElement | null>(null);
+  const [contacts, setContacts] = useState<ContactProps[]>([]);
   const getChatDetails = async () => {
 
     try {
@@ -81,6 +90,29 @@ export default function ChatDetails({
 
     }
   }
+
+
+  const getContacts = async () => {
+    if (!currentUser?._id) return; // Jangan fetch jika user belum tersedia
+    const res = await fetch(`/api/users`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      }
+    )
+    const data = await res.json();
+    const filteredContacts = data
+      .filter((contact: { _id: string }) => contact?._id !== currentUser?._id)
+      .map((contact: { _id: string; isOnline: boolean; lastSeen: Date }) => ({
+        _id: contact._id,
+        isOnline: contact.isOnline,
+        lastSeen: contact.lastSeen,
+      }));
+    setContacts(filteredContacts);
+  }
+
+
 
   useEffect(() => {
     if (currentUser && chatId && !chats) {
@@ -146,6 +178,26 @@ export default function ChatDetails({
   };
 
   useEffect(() => {
+
+    getContacts(); // Ambil daftar kontak dari database
+
+    const chatChannel = pusherClient.subscribe("chat-app");
+    const contactsChannel = pusherClient.subscribe("contacts");
+    // Event saat user online/offline
+    chatChannel.bind("user-status", ({ userId, isOnline, lastSeen }: { userId: string, isOnline: boolean, lastSeen: Date }) => {
+      setContacts((prevContacts) =>
+        prevContacts.map((contact) =>
+          contact._id === userId ? { ...contact, isOnline, lastSeen } : contact
+        )
+      );
+    });
+
+    // Event saat ada user baru
+    contactsChannel.bind("new-user", (newUser: ContactProps) => {
+      setContacts((prevContacts) => [...prevContacts, newUser]);
+    });
+
+
     pusherClient.subscribe(chatId);
 
     const handleMessage = (newMessage: Message) => {
@@ -165,8 +217,12 @@ export default function ChatDetails({
     return () => {
       pusherClient.unsubscribe(chatId);
       pusherClient.unbind("new-message", handleMessage);
+      chatChannel.unbind_all();
+      chatChannel.unsubscribe();
+      contactsChannel.unbind_all();
+      contactsChannel.unsubscribe();
     };
-  }, [chatId]); // Pastikan efek ini hanya terjadi ketika chatId berubah
+  }, [chatId, currentUser]); // Pastikan efek ini hanya terjadi ketika chatId berubah
 
 
 
@@ -196,9 +252,16 @@ export default function ChatDetails({
 
 
 
+
+  console.log(text)
+
+
+
+
+
   return (
     <div className="relative ">
-      <div className="h-full md:h-[535px] pb-20  flex flex-col  shadow-md rounded-2xl overflow-y-auto">
+      <div className="h-full md:h-[535px] pb-12  flex flex-col  shadow-md rounded-2xl overflow-y-auto">
         <div className="flex items-center gap-4 px-3 w-full  bg-muted md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
@@ -232,6 +295,21 @@ export default function ChatDetails({
               />
               <div className="text-foreground text-sm">
                 <p>{otherMembers[0]?.name}</p>
+                <div className='font-normal'>
+                  {contacts[0]?.isOnline && <div className='flex gap-1 items-center'>
+                    <div className="w-2 h-2 bg-green-600 rounded-full" />
+                    <p className="text-xs text-muted-foreground" >Online</p>
+                  </div>}
+
+                  {contacts[0]?.isOnline === false && (
+                    contacts[0]?.lastSeen && (
+                      <div className="text-xs flex gap-1 text-muted-foreground italic">
+                        <p>Offline</p>
+                        {moment(contacts[0]?.lastSeen).fromNow()}
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
             </>
           )}
@@ -248,10 +326,10 @@ export default function ChatDetails({
           <div ref={bottomRef} />
         </div>
 
-        <div className="absolute bottom-0 w-full gap-2 bg-purple-100/10 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
+        <div className="absolute bottom-0 w-full gap-2  flex items-center justify-between px-3 md:px-7 py-2   ">
           <div className="relative">
-            <Smile
-              className="size-5 cursor-pointer bg-yellow-500 rounded-full p-0.5"
+            <SmileIcon
+              className="size-6 cursor-pointer rounded-full p-0.5"
               onClick={() => setShowEmojiPicker((prev) => !prev)}
             />
             {showEmojiPicker && (
@@ -272,7 +350,7 @@ export default function ChatDetails({
           <div className="flex items-center gap-4 relative ">
             <Dialog >
               <DialogTrigger asChild>
-                <ImageIcon className="size-5 " />
+                <ImageIcon className="size-5 cursor-pointer " />
               </DialogTrigger>
               <DialogContent className="w-full rounded-xl sm:max-w-[425px]">
                 <DialogHeader>
@@ -303,7 +381,7 @@ export default function ChatDetails({
           <input
             type="text"
             placeholder="Tulis pesan"
-            className="w-full flex border-none text-gray-800 outline-none focus:outline-none items-center justify-between px-4 py-2 rounded-2xl shadow-2xl"
+            className="w-full flex  border-none text-muted-foreground outline-none focus:outline-none items-center justify-between px-4 py-2 rounded-2xl shadow-purple-500/30  shadow-md"
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => {

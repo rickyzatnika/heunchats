@@ -8,36 +8,39 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { pusherClient } from '@/lib/pusher/pusher'
 import { useRouter } from 'next/navigation'
-
 import Image from 'next/image'
 import { CheckCircle, Loader2, UserRoundCheck } from 'lucide-react'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import moment from 'moment'
+import ChatBox from './ChatBox'
+import ChatList from './ChatList'
 
+
+moment.locale('id');
 
 interface ContactProps {
-  _id: string,
-  name: string,
-  email: string,
-  image: string
+  _id: string;
+  name: string;
+  email: string;
+  image: string;
+  isOnline: boolean;
+  lastSeen?: Date | null;
+
 }
 
 export default function Contact() {
   const { data: session }: any = useSession()
   const [loading, setLoading] = useState(false)
-  const [search, setSearch] = useState("");
   const [contacts, setContacts] = useState<ContactProps[]>([]);
   const router = useRouter()
   const currentUser = session?.user;
 
   const getContacts = async () => {
-
     if (!currentUser?._id) return; // Jangan fetch jika user belum tersedia
-
     try {
       setLoading(true);
-      const res = await fetch(
-        search !== "" ? `/api/users/searchContact/${search}` : `/api/users`,
+      const res = await fetch(`/api/users`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -48,32 +51,84 @@ export default function Contact() {
       setContacts(
         currentUser ? data.filter((contact: { _id: string }) => contact?._id !== currentUser?._id) : data
       );
-
     } catch (error) {
-
       console.log(error);
     } finally {
       setLoading(false);
     }
   }
-
   useEffect(() => {
-    getContacts()
-  }, [currentUser]);
+    getContacts(); // Ambil daftar kontak dari database
 
-  useEffect(() => {
-    const channel = pusherClient.subscribe("contacts");
+    const chatChannel = pusherClient.subscribe("chat-app");
+    const contactsChannel = pusherClient.subscribe("contacts");
 
-    channel.bind("new-user", (newUser: ContactProps) => {
-      // console.log(" New User event received", newUser);
+    // Event saat user online/offline
+    chatChannel.bind("user-status", ({ userId, isOnline, lastSeen }: { userId: string, isOnline: boolean, lastSeen: Date }) => {
+      console.log("🟢 Received user-status event:", { userId, isOnline, lastSeen });
+
+      setContacts((prevContacts) =>
+        prevContacts.map((contact) =>
+          contact._id === userId ? { ...contact, isOnline, lastSeen } : contact
+        )
+      );
+    });
+
+    // Event saat ada user baru
+    contactsChannel.bind("new-user", (newUser: ContactProps) => {
+      console.log("🟣 Received new-user event:", newUser);
       setContacts((prevContacts) => [...prevContacts, newUser]);
-    })
+    });
 
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    }
-  }, [])
+      chatChannel.unbind_all();
+      chatChannel.unsubscribe();
+      contactsChannel.unbind_all();
+      contactsChannel.unsubscribe();
+    };
+  }, [currentUser]);
+
+
+  // useEffect(() => {
+
+  //   getContacts()
+
+  //   const channel = pusherClient.subscribe("chat-app");
+
+  //   // Event saat user online/offline
+  //   channel.bind("user-status", ({ userId, isOnline, lastSeen }: { userId: string, isOnline: boolean, lastSeen: Date }) => {
+  //     setContacts((prevContacts) =>
+  //       prevContacts.map((contact) =>
+  //         contact._id === userId ? { ...contact, isOnline, lastSeen } : contact
+  //       )
+  //     );
+  //   });
+
+  //   return () => {
+  //     channel.unbind_all();
+  //     channel.unsubscribe();
+  //   };
+
+  // }, [currentUser]);
+
+
+
+  // useEffect(() => {
+  //   const channel = pusherClient.subscribe("contacts");
+
+  //   channel.bind("new-user", (newUser: ContactProps) => {
+  //     // console.log(" New User event received", newUser);
+  //     setContacts((prevContacts) => [...prevContacts, newUser]);
+  //   })
+
+  //   return () => {
+  //     channel.unbind_all();
+  //     channel.unsubscribe();
+  //   }
+  // }, [])
+
+
+
   /* SELECT CONTACT */
   const [selectedContacts, setSelectedContacts] = useState<ContactProps[]>([]);
   const isGroup = selectedContacts.length > 1;
@@ -116,6 +171,8 @@ export default function Contact() {
   }
 
 
+
+
   return (
     <div className="flex flex-col md:flex-row gap-5">
       <div className="w-full sm:w-2/3 flex gap-7 items-start max-lg:flex-col ">
@@ -125,11 +182,11 @@ export default function Contact() {
             <span className='text-sm  italic text-muted-foreground'>atau pilih beberapa user untuk membuat group chat</span>
           </div>
           {loading && <p className='flex items-center gap-1 text-sm'> <Loader2 className='size-4 animate-spin' /> Loading...</p>}
-          <div className="flex flex-col p-5 gap-4 flex-1 overflow-y-scroll custom-scrollbar">
+          <div className="flex flex-col p-5  gap-4 flex-1 items-start overflow-y-scroll custom-scrollbar">
             {contacts?.map((user, index) => (
               <div
                 key={index}
-                className="flex gap-3 items-center cursor-pointer"
+                className="flex relative gap-3 items-center cursor-pointer"
                 onClick={() => handleSelect(user)}
               >
                 {selectedContacts.find((item) => item === user) ? (
@@ -140,12 +197,29 @@ export default function Contact() {
                 <Image
                   src={user.image || "/person.jpg"}
                   alt="profile"
-                  className="w-9 h-9 rounded-full object-cover object-center"
+                  className="w-12 h-12  md:w-14 md:h-14 rounded-full object-cover object-center"
                   width={50}
                   height={25}
                   priority={true}
                 />
-                <p className="text-balance capitalize text-sm">{user?.name}</p>
+                <div className=' space-y-1'>
+                  <p className="text-balance capitalize text-sm">{user?.name}</p>
+                  {user.isOnline === true ? (
+                    <div className='flex gap-1 items-center'>
+                      <div className="w-2 h-2 bg-green-600 rounded-full" />
+                      <p className="text-xs text-muted-foreground" >Online</p>
+                    </div>
+                  ) : (
+                    <div className='flex flex-col text-muted-foreground gap-1 '>
+                      <div className='flex gap-1 items-center'>
+                        <div className="w-2 h-2 bg-gray-600 rounded-full" />
+                        <p className='text-xs'>Offline</p>
+                      </div>
+                      {user.lastSeen && <span className="text-xs italic text-muted-foreground">terakhir dilihat: {moment(user.lastSeen).fromNow()}</span>}
+                    </div>
+                  )}
+                </div>
+
               </div>
             ))}
           </div>

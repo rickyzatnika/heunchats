@@ -19,7 +19,7 @@ export default async function SignIn(props: {
 }) {
   const searchParams = await props.searchParams
 
-  const { callbackUrl = '/chats' } = searchParams
+  const { callbackUrl = '/contacts' } = searchParams
 
   const session = await auth()
   if (session) {

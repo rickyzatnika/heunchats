@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { Input } from '../ui/input';
 import ChatBox from './ChatBox';
 
+
 interface Chat {
   _id: string;
   members: { _id: string; name: string; image: string }[];
@@ -18,7 +19,8 @@ interface Chat {
   lastMessageAt: string;
 }
 
-export default function ChatList({ currentChatId }: { currentChatId: string }
+
+export default function ChatList({ currentChatId }: { currentChatId: string; }
 ) {
 
   const { data: session }: any = useSession();
@@ -51,9 +53,9 @@ export default function ChatList({ currentChatId }: { currentChatId: string }
   }, [currentUser, search]);
 
   // useEffect(() => {
-  //   if (!currentUser || !currentUser?.id) return; // Pastikan currentUser._id ada sebelum subscribe
+  //   if (!currentUser || !currentUser?._id) return; // Pastikan currentUser._id ada sebelum subscribe
 
-  //   pusherClient.subscribe(currentUser?.id);
+  //   pusherClient.subscribe(currentUser?._id);
 
   //   const handleChatUpdate = (updatedChat: { id: string; messages: any }) => {
   //     setChats((allChats) =>
@@ -79,8 +81,11 @@ export default function ChatList({ currentChatId }: { currentChatId: string }
 
 
   useEffect(() => {
+
+    if (!currentUser || !currentUser?.id) return;
+
     if (currentUser) {
-      pusherClient.subscribe(currentUser?._id);
+      pusherClient.subscribe(currentUser?.id);
 
       const handleChatUpdate = (updatedChat: { id: string; messages: any }) => {
         setChats((allChats) =>

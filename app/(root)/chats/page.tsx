@@ -5,6 +5,9 @@ import Contact from '@/components/shared/Contact'
 import React from 'react'
 import { useParams } from "next/navigation"
 
+
+
+
 const ChatPage = () => {
 
   const { chatId } = useParams() as { chatId: string }

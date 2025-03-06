@@ -1,12 +1,5 @@
 import Image from 'next/image';
 import React from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import moment from 'moment';
 
 
@@ -44,10 +37,15 @@ export default function MessageBox({ message, currentUser }: {
           {message?.sender?.name} &#160;&#183;&#160; <span className='text-xs text-muted-foreground'>{moment(message?.createdAt).format('h:mm A')}</span>
         </p>
         {message?.text ? (
-          <p className="w-fit bg-muted text-sm md:text-md px-3 py-1.5 rounded-lg ">{message?.text}</p>
+          <p
+            className={`w-fit text-sm md:text-md px-3 py-1.5 rounded-full 
+        ${/^[\p{Emoji}\s]+$/u.test(message.text) ? "bg-transparent text-xl md:text-xl" : "bg-primary/60 text-primary-foreground"}`}
+          >
+            {message.text}
+          </p>
         ) : (
           message?.photo && (
-            <Image width={50} height={25} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-40 h-40 rounded-lg" />
+            <Image width={200} height={100} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-80 h-80 object-contain rounded-lg" />
           )
         )}
       </div>
@@ -60,22 +58,15 @@ export default function MessageBox({ message, currentUser }: {
           {moment(message?.createdAt).format('h:mm A')}
         </p>
         {message?.text ? (
-          <p className="w-fit text-sm md:text-md bg-primary text-primary-foreground px-3 py-1.5  rounded-lg ">{message?.text}</p>
+          <p
+            className={`w-fit text-sm md:text-md px-3 py-1.5 rounded-full 
+        ${/^[\p{Emoji}\s]+$/u.test(message.text) ? "bg-transparent text-xl md:text-xl" : "bg-primary/60 text-primary-foreground"}`}
+          >
+            {message.text}
+          </p>
         ) : (
           message?.photo && (
-            <Dialog >
-              <DialogTrigger asChild>
-                <Image placeholder="blur" blurDataURL={message.photo} width={50} height={25} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-24 h-24 object-cover rounded-lg" />
-              </DialogTrigger>
-              <DialogContent className="w-full  border-none  rounded-xl sm:max-w-xl p-24">
-                <DialogHeader>
-                  <DialogTitle />
-                </DialogHeader>
-                <Image placeholder="blur" blurDataURL={message.photo} width={100} height={75} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-full h-full object-cover rounded-lg" />
-              </DialogContent>
-            </Dialog>
-
-
+            <Image placeholder="blur" blurDataURL={message.photo} width={200} height={100} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-80 h-80 object-contain rounded-lg" />
           )
         )}
       </div>

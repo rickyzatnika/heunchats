@@ -7,7 +7,7 @@ export default {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authorized({ request, auth }: any) {
       const protectedPaths = [
-        /\/chat(\/.*)?/,
+        /\/chats(\/.*)?/,
         /\/profile(\/.*)?/,
       ]
       const { pathname } = request.nextUrl
