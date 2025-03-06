@@ -22,30 +22,32 @@ const Header = () => {
         </nav>
 
         {session && status === 'authenticated' ? (
-          <div className='flex gap-2 items-center'>
-            <DropdownMenu>
-              <DropdownMenuTrigger className='cursor-pointer' asChild>
+          <div className='flex gap-2 items-center '>
+            <DropdownMenu >
+              <DropdownMenuTrigger className='cursor-pointer relative' asChild>
                 <Image src={session.user.image ? session.user.image : '/person.jpg'} alt='profile' width={50} height={25} className='w-10 h-10 rounded-full' />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {/* <DropdownMenuItem>
+              <div className='absolute right-2 top-0'>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuItem>
                   <Link href={`/profile/${session.user.id}`}>Profile</Link>
                 </DropdownMenuItem> */}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href={`/contacts`}>Contacts</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href={`/chats`}>Chats</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <button onClick={() => signOut({ callbackUrl: '/' })} >Logout</button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href={`/contacts`}>Contacts</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href={`/chats`}>Chats</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <button onClick={() => signOut({ callbackUrl: '/' })} >Logout</button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </div>
             </DropdownMenu>
           </div>
         ) : (

@@ -39,7 +39,7 @@ const ChatPage = () => {
   }, [currentUser, chatId])
 
   return (
-    <div className=" h-full flex justify-between gap-5 p-3 md:p-14 max-lg:gap-8">
+    <div className=" h-full flex justify-between gap-5 py-0 p-2 md:p-14 max-lg:gap-8">
       <div className="w-1/3 max-lg:hidden"><ChatList currentChatId={chatId} /></div>
       <div className="w-2/3 max-lg:w-full"><ChatDetails chatId={chatId} /></div>
     </div>

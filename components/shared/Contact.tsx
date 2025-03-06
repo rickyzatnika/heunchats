@@ -139,10 +139,10 @@ export default function Contact() {
             </div>
 
             <div className="flex flex-col gap-3 px-4">
-              <p className="text-sm ">Anggota Group</p>
+              {/* <p className="text-sm ">Anggota Group</p> */}
               <div className="flex flex-wrap gap-3">
                 {selectedContacts?.map((contact, index) => (
-                  <p className="text-xs md:text-sm capitalize  p-2 bg-purple-50 rounded-lg" key={index}>
+                  <p className="text-xs md:text-sm capitalize  p-2 bg-purple-100 rounded-lg" key={index}>
                     {contact?.name}
                   </p>
                 ))}
@@ -153,10 +153,10 @@ export default function Contact() {
 
       </div>
       <div className="w-full sm:w-2/3 flex gap-7 items-start max-lg:flex-col ">
-        <div className="relative h-[425px] md:h-[535px]  overflow-y-scroll rounded-md  bg-purple-200/30 backdrop-blur-md  w-full flex flex-col gap-5 ">
-          <div className='bg-purple-300 p-1 px-4 w-full'>
-            <p className="text-md font-semibold">Pilih User untuk memulai chat</p>
-            <span className='text-xs text-accent-foreground'>atau pilih beberapa user untuk membuat group chat</span>
+        <div className="relative h-[425px] md:h-[535px]  overflow-y-scroll rounded-lg  bg-purple-50 w-full flex flex-col gap-5 ">
+          <div className='bg-purple-300 p-4 px-4 w-full'>
+            <p className="text-sm md:text-md font-semibold">Pilih User untuk memulai chat</p>
+            <span className='text-sm  italic text-accent-foreground'>atau pilih beberapa user untuk membuat group chat</span>
           </div>
 
           <div className="flex flex-col p-5 gap-4 flex-1 overflow-y-scroll custom-scrollbar">

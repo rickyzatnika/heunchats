@@ -197,8 +197,8 @@ export default function ChatDetails({
 
 
   return (
-    <div className="relative">
-      <div className="h-[425px] md:h-[535px] pb-16 flex flex-col bg-purple-50 backdrop-blur-md shadow-md rounded-2xl overflow-y-auto">
+    <div className="relative ">
+      <div className="h-full md:h-[535px] pb-20  flex flex-col bg-purple-50  shadow-md rounded-2xl overflow-y-auto">
         <div className="flex items-center gap-4 px-3 w-full bg-purple-300 md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
@@ -251,7 +251,7 @@ export default function ChatDetails({
         <div className="fixed bottom-0 w-full gap-2 bg-purple-100/10 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
           <div className="relative">
             <Smile
-              className="size-5 cursor-pointer"
+              className="size-5 cursor-pointer bg-yellow-500 rounded-full p-0.5"
               onClick={() => setShowEmojiPicker((prev) => !prev)}
             />
             {showEmojiPicker && (
@@ -303,7 +303,7 @@ export default function ChatDetails({
           <input
             type="text"
             placeholder="Tulis pesan"
-            className="w-full flex border-none text-gray-700 outline-none focus:outline-none items-center justify-between px-4 py-2 rounded-2xl shadow-2xl"
+            className="w-full flex border-none text-gray-800 outline-none focus:outline-none items-center justify-between px-4 py-2 rounded-2xl shadow-2xl"
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => {
