@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <>
-      <header className='w-screen overflow-hidden bg-[#030712]  fixed top-0 z-50 shadow-md shadow-gray-900/70 flex items-center justify-between px-4 sm:px-14 md:px-20 py-4'>
+      <header className='w-full overflow-hidden bg-[#030712]  fixed top-0 z-50 shadow-md shadow-gray-900/70 flex items-center justify-between px-4 sm:px-14 md:px-20 py-4'>
         <nav>
           <Link href="/" className='font-bold text-white text-md md:text-lg '>HuLenx Chat</Link>
         </nav>
