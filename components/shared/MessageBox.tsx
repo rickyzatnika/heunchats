@@ -39,7 +39,7 @@ export default function MessageBox({ message, currentUser }: {
         {message?.text ? (
           <p
             className={`w-fit text-sm md:text-md px-3 py-1.5 rounded-full 
-        ${/^[\p{Emoji}\s]+$/u.test(message.text) ? "bg-transparent text-xl" : "bg-mute dark:bg-mute/40 text-primary-foreground"}`}
+        ${/^[\p{Emoji}\s]+$/u.test(message.text) ? "bg-transparent text-xl" : "bg-muted dark:bg-muted/40 text-primary-foreground"}`}
           >
             {message.text}
           </p>
