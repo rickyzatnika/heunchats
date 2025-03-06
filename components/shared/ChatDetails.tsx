@@ -248,7 +248,7 @@ export default function ChatDetails({
           <div ref={bottomRef} />
         </div>
 
-        <div className="fixed bottom-0 w-full gap-2 bg-purple-100/10 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
+        <div className="absolute bottom-0 w-full gap-2 bg-purple-100/10 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
           <div className="relative">
             <Smile
               className="size-5 cursor-pointer bg-yellow-500 rounded-full p-0.5"
