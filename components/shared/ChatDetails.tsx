@@ -5,7 +5,7 @@
 import { pusherClient } from '@/lib/pusher/pusher';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react'
-import { ImageIcon, SendHorizonal, Upload } from 'lucide-react';
+import { ImageIcon, SendHorizonal, Smile, Upload } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MessageBox from './MessageBox';
@@ -17,8 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import EmojiPicker from "emoji-picker-react";
 
-import "@uploadthing/react/styles.css";
 
 interface Message {
   createdAt?: string;
@@ -57,9 +57,9 @@ export default function ChatDetails({
   const [text, setText] = useState('');
   const currentUser = session?.user as { _id: string; name: string; image: string };
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [currentProfileImage, setCurrentProfileImage] = useState('');
-
+  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
   const getChatDetails = async () => {
 
     try {
@@ -175,12 +175,31 @@ export default function ChatDetails({
   }, [chats?.messages]);
 
 
+  // Fungsi untuk handle klik di luar emoji picker
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    // Tambahkan event listener saat picker terbuka
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
+
 
 
   return (
     <div className="relative">
-      <div className="h-[460px] md:h-[500px] pb-16 flex flex-col bg-gray-100/40 backdrop-blur-md shadow-md rounded-2xl overflow-y-auto">
-        <div className="flex items-center gap-4 px-3 w-full bg-purple-100 md:px-8 py-3 font-bold">
+      <div className="h-[425px] md:h-[535px] pb-16 flex flex-col bg-purple-50 backdrop-blur-md shadow-md rounded-2xl overflow-y-auto">
+        <div className="flex items-center gap-4 px-3 w-full bg-purple-300 md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
               <Link href={`/chats/${chatId}/group-info`}>
@@ -229,11 +248,31 @@ export default function ChatDetails({
           <div ref={bottomRef} />
         </div>
 
-        <div className="fixed bottom-0 w-full gap-2 bg-purple-100 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
+        <div className="fixed bottom-0 w-full gap-2 bg-purple-100/10 flex items-center justify-between px-3 md:px-7 py-2  cursor-pointer ">
+          <div className="relative">
+            <Smile
+              className="size-5 cursor-pointer"
+              onClick={() => setShowEmojiPicker((prev) => !prev)}
+            />
+            {showEmojiPicker && (
+              <div ref={emojiPickerRef} className="absolute bottom-12 left-0 z-50 bg-white shadow-md rounded-lg p-2">
+                <EmojiPicker
+                  width={280}
+                  height={330}
+                  searchDisabled={true}
+                  skinTonesDisabled={true}
+                  lazyLoadEmojis={true}
+
+                  onEmojiClick={(emoji) => setText((prev) => prev + emoji.emoji)} />
+
+
+              </div>
+            )}
+          </div>
           <div className="flex items-center gap-4 relative ">
             <Dialog >
               <DialogTrigger asChild>
-                <ImageIcon className="size-5" />
+                <ImageIcon className="size-5 " />
               </DialogTrigger>
               <DialogContent className="w-full rounded-xl sm:max-w-[425px]">
                 <DialogHeader>
@@ -275,8 +314,8 @@ export default function ChatDetails({
 
           />
 
-          <button className={`${text.length > 5 ? "block" : "hidden"}`} disabled={loading} onClick={sendText}>
-            <SendHorizonal className='size-5 md:size-6' />
+          <button disabled={loading} onClick={sendText}>
+            <SendHorizonal className='size-5 md:size-6 ' />
           </button>
         </div>
       </div>

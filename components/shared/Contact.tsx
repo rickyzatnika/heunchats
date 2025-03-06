@@ -124,15 +124,42 @@ export default function Contact() {
 
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex gap-7 items-start max-lg:flex-col ">
-        <div className="relative h-[500px] overflow-y-scroll rounded-md p-5 bg-purple-50  w-full flex flex-col gap-5 ">
-          <div className=''>
-            <p className="text-body-bold">Pilih User untuk memulai chat</p>
-            <span className='text-xs text-gray-700'>atau pilih beberapa user untuk membuat group chat</span>
+    <div className="flex flex-col md:flex-row-reverse gap-5">
+      <div className="w-full sm:w-1/3 flex flex-col gap-4">
+        {isGroup && (
+          <>
+            <div className="flex flex-col gap-3 rounded-md p-5 bg-purple-50">
+              <p className="text-md font-semibold text-gray-800">Nama Group</p>
+              <Input
+                placeholder="Masukkan nama group..."
+                className="bg-white rounded-2xl px-5 py-3 text-sm outline-none"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-3 px-4">
+              <p className="text-sm ">Anggota Group</p>
+              <div className="flex flex-wrap gap-3">
+                {selectedContacts?.map((contact, index) => (
+                  <p className="text-xs md:text-sm capitalize  p-2 bg-purple-50 rounded-lg" key={index}>
+                    {contact?.name}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+      </div>
+      <div className="w-full sm:w-2/3 flex gap-7 items-start max-lg:flex-col ">
+        <div className="relative h-[425px] md:h-[535px]  overflow-y-scroll rounded-md  bg-purple-200/30 backdrop-blur-md  w-full flex flex-col gap-5 ">
+          <div className='bg-purple-300 p-1 px-4 w-full'>
+            <p className="text-md font-semibold">Pilih User untuk memulai chat</p>
+            <span className='text-xs text-accent-foreground'>atau pilih beberapa user untuk membuat group chat</span>
           </div>
 
-          <div className="flex flex-col gap-4 flex-1 overflow-y-scroll custom-scrollbar">
+          <div className="flex flex-col p-5 gap-4 flex-1 overflow-y-scroll custom-scrollbar">
             {contacts?.map((user, index) => (
               <div
                 key={index}
@@ -140,19 +167,19 @@ export default function Contact() {
                 onClick={() => handleSelect(user)}
               >
                 {selectedContacts.find((item) => item === user) ? (
-                  <CheckCircle />
+                  <CheckCircle className='size-5 text-green-600' />
                 ) : (
-                  <UserRoundCheck />
+                  <UserRoundCheck className='size-5 ' />
                 )}
                 <Image
                   src={user.image || "/person.jpg"}
                   alt="profile"
-                  className="w-11 h-11 rounded-full object-cover object-center"
+                  className="w-9 h-9 rounded-full object-cover object-center"
                   width={50}
                   height={25}
                   priority={true}
                 />
-                <p className="text-base-bold">{user?.name}</p>
+                <p className="text-balance capitalize text-sm">{user?.name}</p>
               </div>
             ))}
           </div>
@@ -165,33 +192,6 @@ export default function Contact() {
           </Button>
         </div>
 
-        <div className="w-full flex flex-col  gap-4">
-          {isGroup && (
-            <>
-              <div className="flex flex-col gap-3 rounded-md p-5 bg-purple-50">
-                <p className="text-body-bold">Nama Group</p>
-                <Input
-                  placeholder="Masukkan nama group..."
-                  className="bg-white rounded-2xl px-5 py-3 outline-nonee"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <p className="text-body-bold">Anggota Group</p>
-                <div className="flex flex-wrap gap-3">
-                  {selectedContacts?.map((contact, index) => (
-                    <p className="text-base border capitalize  p-2 bg-purple-100 rounded-lg" key={index}>
-                      {contact?.name}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-
-        </div>
       </div>
     </div>
   )

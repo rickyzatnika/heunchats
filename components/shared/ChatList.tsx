@@ -112,12 +112,11 @@ export default function ChatList({ currentChatId }: { currentChatId: string }
 
 
   return (
-    <div className="h-full flex flex-col gap-3">
+    <div className="h-[425px] md:h-[535px] overflow-y-auto flex flex-col gap-3">
       <Input className='hidden' type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
-
-      <div className="flex-1 flex flex-col bg-white/30 backdrop-blur-md shadow-lg rounded-3xl overflow-y-hidden ">
-        <h1 className='py-4 text-md md:text-md px-4 font-bold w-full bg-purple-100'>Contacts</h1>
-        <div className='py-4 px-3'>
+      <div className="flex-1 flex bg-purple-200/30 flex-col backdrop-blur-md shadow-lg rounded-xl overflow-y-hidden ">
+        <h1 className='py-4 text-md md:text-md px-4 font-semibold w-full bg-purple-300'>Daftar Pesan</h1>
+        <div className=' py-4 px-3'>
 
           {chats?.map((chat) => (
             <ChatBox

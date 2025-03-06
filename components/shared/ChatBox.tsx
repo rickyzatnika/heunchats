@@ -41,7 +41,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
 
   return (
     <div
-      className={`relative flex items-start border-b pb-3 justify-between p-2 cursor-pointer hover:bg-purple-50 ${chat?._id === currentChatId ? 'bg-blue-2' : ''}`}
+      className={`relative flex items-start border-accent border-b pb-3 justify-between p-2 cursor-pointer rounded hover:bg-purple-300/20 ${chat?._id === currentChatId ? 'bg-blue-2' : ''}`}
       onClick={() => router.push(`/chats/${chat?._id}`)}
     >
       <div className="flex gap-3  ">
@@ -67,7 +67,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
         )}
 
         <div className="flex flex-col gap-1">
-          <p className="text-base-bold">
+          <p className="text-md font-semibold">
             {chat?.isGroup ? chat?.name : otherMembers[0]?.name}
           </p>
 
@@ -75,14 +75,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             <p className="text-sm font-bold">Started a chat</p>
           ) : lastMessage?.photo ? (
             lastMessage?.sender?._id === currentUser?._id ? (
-              <p className="text-sm text-gray-500">You sent a photo</p>
+              <p className="text-sm text-foreground">You sent a photo</p>
             ) : (
-              <p className={`${seen ? 'text-sm text-gray-400' : 'font-semibold text-sm text-gray-900'}`}>
+              <p className={`${seen ? 'text-sm text-foreground' : 'font-semibold text-sm text-gray-900'}`}>
                 Received a photo
               </p>
             )
           ) : (
-            <p className={`w-[120px] sm:w-[250px] ${seen ? 'text-sm text-gray-400' : 'font-semibold text-sm text-gray-900'}`}>
+            <p className={`w-[120px] sm:w-[250px] ${seen ? 'text-sm text-foreground' : 'font-semibold text-sm text-gray-900'}`}>
               {lastMessage?.text}
             </p>
           )}
@@ -90,7 +90,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
       </div>
 
       <div className='absolute right-2 top-4' >
-        <p className="text-xs text-gray-600  uppercase">
+        <p className="text-xs text-accent-foreground font-semibold uppercase">
           {!lastMessage
             ? moment(chat?.createdAt).format('hh:mm a')
             : moment(chat?.lastMessageAt).format('hh:mm a')}

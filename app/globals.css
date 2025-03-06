@@ -8,10 +8,6 @@
   border-radius: 2px;
 }
 
-.custom-class > *[data-ut-element='upload-icon'] {
-  @apply hidden;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -116,10 +112,7 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-accent-foreground/80 text-foreground;
   }
 }
