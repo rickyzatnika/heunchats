@@ -143,7 +143,7 @@ export default function FormRegister() {
           <Separator className='mb-4' />
           <div className='text-sm'>
             Sudah punya akun?{' '}
-            <Link className='link' href={`/?callbackUrl=${callbackUrl}`}>
+            <Link className='link' href={`/login?callbackUrl=${callbackUrl}`}>
               Masuk
             </Link>
           </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import './globals.css'
 import { Poppins } from 'next/font/google'
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -20,11 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='en' suppressHydrationWarning translate='no'>
       <body className={`${poppins.className} `}>
-
-        <div className="pt-20 md:pt-16 h-full w-full">
+        <div className="pt-16 md:pt-16 h-full w-full">
           {children}
         </div>
-
+        <Toaster />
       </body>
     </html>
   )

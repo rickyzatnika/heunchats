@@ -198,8 +198,8 @@ export default function ChatDetails({
 
   return (
     <div className="relative ">
-      <div className="h-full md:h-[535px] pb-20  flex flex-col bg-purple-50  shadow-md rounded-2xl overflow-y-auto">
-        <div className="flex items-center gap-4 px-3 w-full bg-purple-300 md:px-8 py-3 font-bold">
+      <div className="h-full md:h-[535px] pb-20  flex flex-col  shadow-md rounded-2xl overflow-y-auto">
+        <div className="flex items-center gap-4 px-3 w-full  bg-muted md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
               <Link href={`/chats/${chatId}/group-info`}>
@@ -213,7 +213,7 @@ export default function ChatDetails({
                 />
               </Link>
 
-              <div className="text-pretty text-gray-900 text-sm">
+              <div className=" text-muted text-sm">
                 <p className='capitalize'>
                   {chats?.name} &#160; &#183; &#160; {chats?.members?.length}{" "}
                   members
@@ -230,7 +230,7 @@ export default function ChatDetails({
                 height={25}
                 priority={true}
               />
-              <div className="text-gray-900 text-sm">
+              <div className="text-foreground text-sm">
                 <p>{otherMembers[0]?.name}</p>
               </div>
             </>

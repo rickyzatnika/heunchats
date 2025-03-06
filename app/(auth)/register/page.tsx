@@ -8,7 +8,7 @@ const RegisterPage = () => {
     <div className='w-full sm:w-1/2 md:w-1/3 mx-auto px-4'>
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl'>Daftar</CardTitle>
+          <CardTitle className='text-xl'>Daftar</CardTitle>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<div>Loading...</div>}>

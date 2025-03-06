@@ -22,9 +22,9 @@ declare module 'next-auth' {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   pages: {
-    signIn: '/',
+    signIn: '/login',
     newUser: '/register',
-    error: '/',
+    error: '/login',
   },
   session: {
     strategy: 'jwt',

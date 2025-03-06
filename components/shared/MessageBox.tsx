@@ -40,11 +40,11 @@ export default function MessageBox({ message, currentUser }: {
         <Image src={message?.sender?.image || "/person.jpg"} width={50} height={25} priority={true} alt="profile photo" className=" w-8 h-8 rounded-full" />
       )}
       <div className="flex flex-col gap-2">
-        <p className="text-xs md:text-md ">
-          {message?.sender?.name} &#160;&#183;&#160; <span className='text-xs'>{moment(message?.createdAt).format('h:mm A')}</span>
+        <p className="text-sm font-semibold md:text-md ">
+          {message?.sender?.name} &#160;&#183;&#160; <span className='text-xs text-muted-foreground'>{moment(message?.createdAt).format('h:mm A')}</span>
         </p>
         {message?.text ? (
-          <p className="w-fit bg-gray-200 text-sm md:text-md px-3 py-1.5 rounded-lg ">{message?.text}</p>
+          <p className="w-fit bg-muted text-sm md:text-md px-3 py-1.5 rounded-lg ">{message?.text}</p>
         ) : (
           message?.photo && (
             <Image width={50} height={25} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-40 h-40 rounded-lg" />
@@ -55,19 +55,19 @@ export default function MessageBox({ message, currentUser }: {
   ) : (
     <div className="flex gap-3 items-start justify-end">
       <div className="flex flex-col gap-2 items-end">
-        <p className="text-xs">
+        <p className="text-xs text-muted-foreground">
 
           {moment(message?.createdAt).format('h:mm A')}
         </p>
         {message?.text ? (
-          <p className="w-fit text-sm md:text-md bg-purple-100 text-gray-900 px-3 py-1.5  rounded-lg ">{message?.text}</p>
+          <p className="w-fit text-sm md:text-md bg-primary text-primary-foreground px-3 py-1.5  rounded-lg ">{message?.text}</p>
         ) : (
           message?.photo && (
             <Dialog >
               <DialogTrigger asChild>
                 <Image placeholder="blur" blurDataURL={message.photo} width={50} height={25} src={message.photo || "/person.jpg"} priority={true} alt="message" className="w-24 h-24 object-cover rounded-lg" />
               </DialogTrigger>
-              <DialogContent className="w-full bg-transparent border-none text-white rounded-xl sm:max-w-xl p-24">
+              <DialogContent className="w-full  border-none  rounded-xl sm:max-w-xl p-24">
                 <DialogHeader>
                   <DialogTitle />
                 </DialogHeader>
