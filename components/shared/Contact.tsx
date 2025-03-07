@@ -176,9 +176,8 @@ export default function Contact() {
     <div className="flex flex-col md:flex-row gap-5">
       <div className="w-full sm:w-2/3 flex gap-7 items-start max-lg:flex-col ">
         <div className="h-full md:h-[535px]  overflow-y-scroll rounded-lg   w-full flex flex-col gap-5 ">
-          <div className=' py-4 md:py-4 px-2 md:px-4 w-full border-b border-border'>
-            <p className="text-md md:text-lg font-semibold">Pilih User untuk memulai chat</p>
-            <span className='text-sm  italic text-muted-foreground'>atau pilih beberapa user untuk membuat group chat</span>
+          <div className=' py-2 md:py-3 px-2 md:px-4 w-full border-b border-border'>
+            <p className="text-md md:text-lg font-semibold">Pilih User untuk memulai atau membuat group chat</p>
           </div>
           {loading && <p className='flex items-center gap-1 text-sm'> <Loader2 className='size-4 animate-spin' /> Loading...</p>}
           <div className="flex flex-col p-2 md:p-5  gap-4 flex-1 items-start overflow-y-scroll custom-scrollbar">
