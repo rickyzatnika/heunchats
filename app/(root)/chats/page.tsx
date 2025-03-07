@@ -13,7 +13,7 @@ const ChatPage = () => {
   const { chatId } = useParams() as { chatId: string }
 
   return (
-    <div className='h-full flex justify-between gap-4 px-2 md:px-24 py-2 md:py-14 max-lg:gap-8'>
+    <div className='h-screen pb-2 flex justify-between gap-4 px-2 md:px-24 pt-4  md:pt10 max-lg:gap-8'>
       <div className='w-1/3 max-lg:w-1/2 max-md:w-full'>
         <ChatList currentChatId={chatId} />
       </div>

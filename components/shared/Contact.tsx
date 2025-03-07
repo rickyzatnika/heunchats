@@ -183,7 +183,7 @@ export default function Contact() {
             <span className='text-sm  italic text-muted-foreground'>atau pilih beberapa user untuk membuat group chat</span>
           </div>
           {loading && <p className='flex items-center gap-1 text-sm'> <Loader2 className='size-4 animate-spin' /> Loading...</p>}
-          <div className="flex flex-col p-5  gap-4 flex-1 items-start overflow-y-scroll custom-scrollbar">
+          <div className="flex flex-col p-2 md:p-5  gap-4 flex-1 items-start overflow-y-scroll custom-scrollbar">
             <ScrollArea className='w-full h-[550px] md:h-[340px]'>
               {contacts?.map((user, index) => (
                 <div
@@ -237,10 +237,10 @@ export default function Contact() {
         </div>
 
       </div>
-      <div className="w-full sm:w-1/3 flex flex-col gap-4">
+      <div className="w-full sm:w-1/3 px-1 flex flex-col gap-4">
         {isGroup && (
           <>
-            <div className="flex flex-col gap-3 rounded-md p-5 ">
+            <div className="flex flex-col gap-3 rounded-md p-2 md:p-5 ">
               <p className="text-md font-semibold ">Nama Group</p>
               <Input
                 placeholder="Masukkan nama group..."

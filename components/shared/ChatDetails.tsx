@@ -209,9 +209,9 @@ export default function ChatDetails({
 
 
   return (
-    <div className="relative ">
-      <div className="h-screen  md:h-[535px] mb-2 pb-8 flex flex-col  shadow-md rounded-2xl overflow-y-auto">
-        <div className="flex items-center gap-4 px-3 w-full  bg-muted md:px-8 py-3 font-bold">
+    <div className="relative">
+      <div className="h-screen pt-4 md:pt-0 md:h-[535px] mb-2 pb-8 flex flex-col  shadow-md rounded-2xl overflow-y-auto">
+        <div className="flex items-center gap-2 px-3 rounded-sm w-full bg-primary dark:bg-primary/60 md:px-8 py-3 font-bold">
           {chats?.isGroup ? (
             <>
               <Link href={`/chats/${chatId}/group-info`}>
@@ -237,12 +237,12 @@ export default function ChatDetails({
               <Image
                 src={otherMembers[0]?.image || "/person.jpg"}
                 alt="profile photo"
-                className="w-11 h-11 rounded-full object-cover object-center"
+                className="w-9 h-9 rounded-full object-cover object-center"
                 width={50}
                 height={25}
                 priority={true}
               />
-              <div className="text-foreground text-sm">
+              <div className=" text-white/90 text-sm capitalize">
                 <p>{otherMembers[0]?.name}</p>
 
               </div>

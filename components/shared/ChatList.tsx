@@ -117,7 +117,7 @@ export default function ChatList({ currentChatId }: { currentChatId: string; }
 
 
   return (
-    <div className="h-full md:h-[535px] overflow-y-auto flex flex-col gap-3">
+    <div className="h-full overflow-y-auto flex flex-col gap-3">
       <Input className='hidden' type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
       <div className="flex-1 flex bg-muted/40 flex-col shadow-lg rounded-xl overflow-y-hidden ">
         <h1 className='py-4 text-md md:text-md px-4 font-semibold w-full bg-secondary text-foreground'>Daftar Pesan</h1>
