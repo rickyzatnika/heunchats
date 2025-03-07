@@ -68,8 +68,11 @@ export default function ChatDetails({
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [currentProfileImage, setCurrentProfileImage] = useState('');
   const emojiPickerRef = useRef<HTMLDivElement | null>(null);
-  const [contacts, setContacts] = useState<ContactProps[]>([]);
+
+
+
   const getChatDetails = async () => {
+    if (!chatId) return;
 
     try {
       const res = await fetch(`/api/chats/${chatId}`, {
@@ -90,29 +93,6 @@ export default function ChatDetails({
 
     }
   }
-
-
-  const getContacts = async () => {
-    if (!currentUser?._id) return; // Jangan fetch jika user belum tersedia
-    const res = await fetch(`/api/users`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        cache: "no-store",
-      }
-    )
-    const data = await res.json();
-    const filteredContacts = data
-      .filter((contact: { _id: string }) => contact?._id !== currentUser?._id)
-      .map((contact: { _id: string; isOnline: boolean; lastSeen: Date }) => ({
-        _id: contact._id,
-        isOnline: contact.isOnline,
-        lastSeen: contact.lastSeen,
-      }));
-    setContacts(filteredContacts);
-  }
-
-
 
   useEffect(() => {
     if (currentUser && chatId && !chats) {
@@ -179,25 +159,6 @@ export default function ChatDetails({
 
   useEffect(() => {
 
-    getContacts(); // Ambil daftar kontak dari database
-
-    const chatChannel = pusherClient.subscribe("chat-app");
-    const contactsChannel = pusherClient.subscribe("contacts");
-    // Event saat user online/offline
-    chatChannel.bind("user-status", ({ userId, isOnline, lastSeen }: { userId: string, isOnline: boolean, lastSeen: Date }) => {
-      setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact._id === userId ? { ...contact, isOnline, lastSeen } : contact
-        )
-      );
-    });
-
-    // Event saat ada user baru
-    contactsChannel.bind("new-user", (newUser: ContactProps) => {
-      setContacts((prevContacts) => [...prevContacts, newUser]);
-    });
-
-
     pusherClient.subscribe(chatId);
 
     const handleMessage = (newMessage: Message) => {
@@ -217,12 +178,9 @@ export default function ChatDetails({
     return () => {
       pusherClient.unsubscribe(chatId);
       pusherClient.unbind("new-message", handleMessage);
-      chatChannel.unbind_all();
-      chatChannel.unsubscribe();
-      contactsChannel.unbind_all();
-      contactsChannel.unsubscribe();
+
     };
-  }, [chatId, currentUser]); // Pastikan efek ini hanya terjadi ketika chatId berubah
+  }, [chatId]);
 
 
 
@@ -248,15 +206,6 @@ export default function ChatDetails({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showEmojiPicker]);
-
-
-
-
-
-  console.log(text)
-
-
-
 
 
   return (
@@ -295,21 +244,7 @@ export default function ChatDetails({
               />
               <div className="text-foreground text-sm">
                 <p>{otherMembers[0]?.name}</p>
-                <div className='font-normal'>
-                  {contacts[0]?.isOnline && <div className='flex gap-1 items-center'>
-                    <div className="w-2 h-2 bg-green-600 rounded-full" />
-                    <p className="text-xs text-muted-foreground" >Online</p>
-                  </div>}
 
-                  {contacts[0]?.isOnline === false && (
-                    contacts[0]?.lastSeen && (
-                      <div className="text-xs flex gap-1 text-muted-foreground italic">
-                        <p>Offline</p>
-                        {moment(contacts[0]?.lastSeen).fromNow()}
-                      </div>
-                    )
-                  )}
-                </div>
               </div>
             </>
           )}
@@ -340,10 +275,7 @@ export default function ChatDetails({
                   searchDisabled={true}
                   skinTonesDisabled={true}
                   lazyLoadEmojis={true}
-
                   onEmojiClick={(emoji) => setText((prev) => prev + emoji.emoji)} />
-
-
               </div>
             )}
           </div>

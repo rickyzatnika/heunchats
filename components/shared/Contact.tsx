@@ -66,7 +66,7 @@ export default function Contact() {
 
     // Event saat user online/offline
     chatChannel.bind("user-status", ({ userId, isOnline, lastSeen }: { userId: string, isOnline: boolean, lastSeen: Date }) => {
-      console.log("🟢 Received user-status event:", { userId, isOnline, lastSeen });
+
 
       setContacts((prevContacts) =>
         prevContacts.map((contact) =>
@@ -77,7 +77,7 @@ export default function Contact() {
 
     // Event saat ada user baru
     contactsChannel.bind("new-user", (newUser: ContactProps) => {
-      console.log("🟣 Received new-user event:", newUser);
+
       setContacts((prevContacts) => [...prevContacts, newUser]);
     });
 
