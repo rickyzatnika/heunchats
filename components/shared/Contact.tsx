@@ -13,8 +13,6 @@ import { CheckCircle, Loader2, UserRoundCheck } from 'lucide-react'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import moment from 'moment'
-import ChatBox from './ChatBox'
-import ChatList from './ChatList'
 import { ScrollArea } from '../ui/scroll-area'
 
 

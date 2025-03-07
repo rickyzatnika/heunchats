@@ -5,7 +5,7 @@
 import { pusherClient } from '@/lib/pusher/pusher';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react'
-import { ImageIcon, SendHorizonal, Smile, SmileIcon, Upload } from 'lucide-react';
+import { ImageIcon, SendHorizonal, SmileIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MessageBox from './MessageBox';
