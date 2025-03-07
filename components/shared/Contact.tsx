@@ -15,6 +15,7 @@ import { Button } from '../ui/button'
 import moment from 'moment'
 import ChatBox from './ChatBox'
 import ChatList from './ChatList'
+import { ScrollArea } from '../ui/scroll-area'
 
 
 moment.locale('id');
@@ -176,60 +177,63 @@ export default function Contact() {
   return (
     <div className="flex flex-col md:flex-row gap-5">
       <div className="w-full sm:w-2/3 flex gap-7 items-start max-lg:flex-col ">
-        <div className="relative h-[425px] md:h-[535px]  overflow-y-scroll rounded-lg   w-full flex flex-col gap-5 ">
+        <div className="h-full md:h-[535px]  overflow-y-scroll rounded-lg   w-full flex flex-col gap-5 ">
           <div className=' py-4 md:py-4 px-2 md:px-4 w-full border-b border-border'>
             <p className="text-md md:text-lg font-semibold">Pilih User untuk memulai chat</p>
             <span className='text-sm  italic text-muted-foreground'>atau pilih beberapa user untuk membuat group chat</span>
           </div>
           {loading && <p className='flex items-center gap-1 text-sm'> <Loader2 className='size-4 animate-spin' /> Loading...</p>}
           <div className="flex flex-col p-5  gap-4 flex-1 items-start overflow-y-scroll custom-scrollbar">
-            {contacts?.map((user, index) => (
-              <div
-                key={index}
-                className="flex relative gap-3 items-center cursor-pointer"
-                onClick={() => handleSelect(user)}
-              >
-                {selectedContacts.find((item) => item === user) ? (
-                  <CheckCircle className='size-5 text-green-600' />
-                ) : (
-                  <UserRoundCheck className='size-5 ' />
-                )}
-                <Image
-                  src={user.image || "/person.jpg"}
-                  alt="profile"
-                  className="w-12 h-12  md:w-14 md:h-14 rounded-full object-cover object-center"
-                  width={50}
-                  height={25}
-                  priority={true}
-                />
-                <div className=' space-y-1'>
-                  <p className="text-balance capitalize text-sm">{user?.name}</p>
-                  {user.isOnline === true ? (
-                    <div className='flex gap-1 items-center'>
-                      <div className="w-2 h-2 bg-green-600 rounded-full" />
-                      <p className="text-xs text-muted-foreground" >Online</p>
-                    </div>
+            <ScrollArea className='w-full h-[550px] md:h-[340px]'>
+              {contacts?.map((user, index) => (
+                <div
+                  key={index}
+                  className="flex relative gap-3 mb-4 pb-2 border-b border-border items-center cursor-pointer"
+                  onClick={() => handleSelect(user)}
+                >
+                  {selectedContacts.find((item) => item === user) ? (
+                    <CheckCircle className='size-5 text-green-600' />
                   ) : (
-                    <div className='flex flex-col text-muted-foreground gap-1 '>
-                      <div className='flex gap-1 items-center'>
-                        <p className='text-xs'>Offline</p>
-                        {user.lastSeen && <span className="text-xs italic text-muted-foreground">{moment(user.lastSeen).fromNow()}</span>}
-                      </div>
-                    </div>
+                    <UserRoundCheck className='size-5 ' />
                   )}
-                </div>
+                  <Image
+                    src={user.image || "/person.jpg"}
+                    alt="profile"
+                    className="w-12 h-12  md:w-14 md:h-14 rounded-full object-cover object-center"
+                    width={50}
+                    height={25}
+                    priority={true}
+                  />
+                  <div className=' space-y-1'>
+                    <p className="text-balance capitalize text-sm">{user?.name}</p>
+                    {user.isOnline === true ? (
+                      <div className='flex gap-1 items-center'>
+                        <div className="w-2 h-2 bg-green-600 rounded-full" />
+                        <p className="text-xs text-muted-foreground" >Online</p>
+                      </div>
+                    ) : (
+                      <div className='flex flex-col text-muted-foreground gap-1 '>
+                        <div className='flex gap-1 items-center'>
+                          <p className='text-xs'>Offline</p>
+                          {user.lastSeen && <span className="text-xs italic text-muted-foreground">{moment(user.lastSeen).fromNow()}</span>}
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
-              </div>
-            ))}
+                </div>
+              ))}
+            </ScrollArea>
+            <Button
+              onClick={createChat}
+              disabled={selectedContacts.length === 0}
+              className=''
+              variant={selectedContacts.length === 0 ? "outline" : "default"}
+            >
+              Mulai Obrolan
+            </Button>
           </div>
-          <Button
-            onClick={createChat}
-            disabled={selectedContacts.length === 0}
-            className='absolute bottom-5 left-5'
-            variant={selectedContacts.length === 0 ? "outline" : "default"}
-          >
-            Mulai Obrolan
-          </Button>
+
         </div>
 
       </div>
