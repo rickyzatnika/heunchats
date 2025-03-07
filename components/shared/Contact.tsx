@@ -212,10 +212,9 @@ export default function Contact() {
                   ) : (
                     <div className='flex flex-col text-muted-foreground gap-1 '>
                       <div className='flex gap-1 items-center'>
-                        <div className="w-2 h-2 bg-gray-600 rounded-full" />
                         <p className='text-xs'>Offline</p>
+                        {user.lastSeen && <span className="text-xs italic text-muted-foreground">{moment(user.lastSeen).fromNow()}</span>}
                       </div>
-                      {user.lastSeen && <span className="text-xs italic text-muted-foreground">terakhir dilihat: {moment(user.lastSeen).fromNow()}</span>}
                     </div>
                   )}
                 </div>
